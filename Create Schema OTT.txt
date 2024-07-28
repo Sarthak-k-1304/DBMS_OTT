@@ -1,0 +1,129 @@
+Create Schema OTT
+Create Table Production_House(
+PHName varchar,
+PHID integer,
+Founded_in integer,
+Primary Key(PHID)
+);
+Create Table Content(
+IMDBrating Decimal(2),
+release_year Integer,
+Content_type Varchar,
+Langauage varchar,
+Cname varchar,
+CID Integer,
+PHID Integer,
+Primary Key(CID),
+foreign key(PHID) references Production_House(PHID) ON DELETE SET NULL ON UPDATE CASCADE
+);
+Create Table Content_Genre(
+ CID Integer,
+Genre Varchar,
+Primary Key(CID,Genre)
+);
+Create Table Episodes (
+Episode_no Integer,
+Release_Date date,
+CID integer,
+Running_Time Numeric,
+Primary Key(Episode_no,CID),
+Foreign Key(CID) references Content(CID)
+);
+Create Table Users (
+UserID integer,
+User_Name varchar,
+Sex varchar,
+Primary Key(UserID)
+);
+Create Table User_Rating (
+User_ID Integer,
+CID Integer,
+Rating Numeric,
+WatchTime Numeric,
+Primary Key(User_ID, CID),
+foreign key (User_ID) references Users(UserID),
+foreign key (CID) references Content(CID)
+);
+Create Table Subscription_Type (
+SubsType varchar,
+Price integer,
+No_of_login_devices_allowed Integer,
+Ads_shown Boolean,
+Primary Key(SubsType)
+);
+Create Table User_subscriptions (
+UserID Integer,
+SubsType Varchar,
+Start_date date,
+End_date date,
+Primary Key(UserID, SubsType),
+foreign key (UserID) references Users(UserID),
+foreign key (SubsType) references Subscription_Type(SubsType)
+);
+Create Table Genre_Preference (
+Genre varchar,
+UserID integer,
+Primary Key(Genre, UserID),
+foreign key (UserID) references Users(UserID)
+);
+Create Table Language_Preferences (
+Language varchar,
+UserId integer,
+Primary Key(Language, UserId),
+foreign key (UserID) references Users(UserID)
+);
+Create Table Actors (
+ActorID integer,
+Name varchar,
+Birthdate date,
+Relationship_status varchar,
+Primary key(ActorID)
+);
+Create Table Series_Actors (
+CID Integer,
+ActorID Integer,
+Primary Key(CID,ActorID),
+foreign key (CID) references Content(CID),
+foreign key (ActorID) references Actors(ActorID)
+);
+Create Table Award (
+Presented_By varchar,
+Name varchar,
+Award_ID Integer,
+Primary Key(Award_ID)
+);
+Create Table Awards_Recieved (
+Award_ID integer,
+ActorID integer,
+Year Date,
+Primary Key(Award_ID),
+foreign key (ActorID) references Actors(ActorID),
+foreign key (Award_ID) references Award(Award_ID)
+);
+Create Table Roles_Played (
+ActorID integer,
+Roles varchar,
+Primary Key(ActorID, Roles),
+foreign key (ActorID) references Actors(ActorID)
+);
+Create Table Advertising_Company (
+Advc_Name Varchar,
+Advc_ID integer,
+Primary key (Advc_ID)
+);
+Create Table Advertisement (
+Category varchar,
+AdID integer,
+Duration numeric,
+No_of_times_displayed Integer,
+Advc_ID integer,
+Primary Key(AdID),
+foreign key (Advc_ID) references Advertising_Company(Advc_ID)
+);
+Create Table Content_Advertisment (
+CID integer,
+AdID integer,
+Primary Key (CID,AdID),
+foreign key (AdID) references Advertisement(AdID),
+foreign key (CID) references Content(CID)
+);
